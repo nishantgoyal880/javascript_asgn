@@ -1,100 +1,74 @@
 var textract = require('textract');
-var natural = require('natural');
-var tokenizer = new natural.WordTokenizer();
+//var natural = require('natural');
 var wordcount = require('wordcount');
 var WordPOS = require('wordpos');
 wordpos = new WordPOS();
-var countT=new Array(5);
-var countA=new Array(5);
+var countT=new Array(6);
+var countA=new Array(6);
 var i;
-var totalWordsT=0;
-var totalWordsA=0;
 
 function init(count){
-for(i=0;i<5;i++){
-  count[i]=0;
+  for(i=0;i<6;i++){
+    count[i]=0;
   }
 }
 //initializing arrays
 init(countA);
 init(countT);
 
-var myFirstPromise = new Promise((resolve, reject) => {
-                  //reading file
-                  textract.fromFileWithPath('html.docx',{preserveLineBreaks:true},function(error,text){
-                    if (error) {
-                      console.log(error);
-                    } else {
+           var docBreak = function(file,count){
+             return new Promise(function(resolve,reject){
+              //reading file
+              textract.fromFileWithPath(file,{preserveLineBreaks:true},function(error,text){
+                if (error){
+                  console.log(error);
+                }else{
                       //counting word
-                      totalWordsA=wordcount(text);
+                      count[0]=wordcount(text);
                       //counting nouns
                       wordpos.getNouns(text, function(result){
-                      countA[0]=result.length;
+                      count[1]=result.length;
                       });
                       //counting adjectives
                       wordpos.getAdjectives(text, function(result){
-                      countA[1]=result.length;
+                      count[2]=result.length;
                       });
                       //counting verbs
                       wordpos.getVerbs(text, function(result){
-                      countA[2]=result.length;
+                      count[3]=result.length;
                       });
                       //counting adverbs
                       wordpos.getAdverbs(text, function(result){
-                      countA[3]=result.length;
+                      count[4]=result.length;
                       });
                     }
+                    resolve("success");
                   });
-                resolve("success");
-          });
+              });
+            }
+          
+        Promise.all([docBreak('html.docx',countA),docBreak('bootstrap.docx',countT)]).then(function(){
+        	var score=200;
+        	var wordPerc= parseInt((countA[0]-countT[0])/countA[0]*100);
+        	var wordPerc = (wordPerc < 0) ? wordPerc * -1 : wordPerc;
+        	console.log(wordPerc);
+        	var nounPerc=(countA[1]-countT[1])/countA[1]*100;
+        	var nounPerc = (nounPerc < 0) ? nounPerc * -1 : nounPerc;
+        	var adjPerc=(countA[2]-countT[2])/countA[2]*100;
+        	var adjPerc = (adjPerc < 0) ? adjPerc * -1 : adjPerc;
+        	var verbPerc=(countA[3]-countT[3])/countA[3]*100;
+        	var verbPerc = (verbPerc < 0) ? verbPerc * -1 : verbPerc;
+        	console.log(verbPerc);
+        	var adPerc=(countA[4]-countT[4])/countA[4]*100;
+        	var adPerc = (adPerc < 0) ? adPerc * -1 : adPerc;
+        	console.log(adPerc);
 
-myFirstPromise.then((successMessage) => {
-  console.log("creating report from Admin Document");
-});
+    		if(countT[0]>1500 && countT[0]<5000){
 
-var mySecondPromise = new Promise((resolve, reject) => {
-                  //reading file
-                  textract.fromFileWithPath('html.docx',{preserveLineBreaks:true},function(error,text){
-                    if (error) {
-                      console.log(error);
-                    } else {
-                      //counting word
-                      totalWordsT=wordcount(text);
-                      //counting nouns
-                      wordpos.getNouns(text, function(result){
-                      countT[0]=result.length;
-                      });
-                      //counting adjectives
-                      wordpos.getAdjectives(text, function(result){
-                      countT[1]=result.length;
-                      });
-                      //counting verbs
-                      wordpos.getVerbs(text, function(result){
-                      countT[2]=result.length;
-                      });
-                      //counting adverbs
-                      wordpos.getAdverbs(text, function(result){
-                      countT[3]=result.length;
-                      });
-                    }
-                  });
-                resolve("success");
-          });
 
-mySecondPromise.then((successMessage) => {
-  console.log("creating report from Target Document");
-});
 
-var myThirdPromise = new Promise((resolve, reject) => {
-        resolve("success");
-});
-myThirdPromise.then((successMessage) => {
-var score=200;
-if(totalWordsT>1500){
-  
-
-}else{
-  console.log("Document word count is less therefore rejected");
-}
-console.log("--------------Analysis completed-----------");
-});
+    		}else{
+    		console.log("Document word count is less therefore rejected");
+  			}
+  			console.log("-------------Analysis completed-----------");
+        });
