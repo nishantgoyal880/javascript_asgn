@@ -1,0 +1,20 @@
+{
+  "docType": {
+    "msg": "File Accepted:Good to go"
+  },
+  "docWord": {
+    "msg": "The target file is not within the allowed range"
+  },
+  "docSim": {
+    "val": 53,
+    "msg": "You have done an average job"
+  },
+  "docTech": {
+    "val": 10,
+    "msg": "Your document is worthy for you only"
+  },
+  "docLit": {
+    "val": 3,
+    "msg": "This document is around the topic"
+  }
+}

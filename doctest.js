@@ -44,6 +44,14 @@ var compData={
   targetbPerc:0,
 }
 
+//JSON object
+var finalResults={};
+var param=['docType','docWord','docSim','docTech','docLit'];
+param.map(state=>{
+  finalResults[state]={
+  }
+});
+
 //tokenizing keywords file and counting total words
 var hRead=fs.readFileSync('htmlkeys.txt','utf8');
 wordH=wordcount(hRead);
@@ -119,11 +127,71 @@ Promise.all(promises).then(function(results){
    compData.targethPerc=percKeys(tokenhKeys,tokenArrayT,wordH);
    compData.targetbPerc=percKeys(tokenbKeys,tokenArrayT,wordB);
 
-
-
    console.log(adminData);
    console.log(targetData);
    console.log(compData);
+
+   //Checking the file type
+   if(targetData.extT!=adminData.extA){
+    finalResults.docType.push({
+      msg:"File rejected:wrong file extension,(.docx) required"
+    });
+   }else{
+    finalResults.docType.msg="File Accepted:Good to go";
+   }
+
+   //Checking word count
+   if((targetData.wordcount>parseInt((adminData.wordcount*80)/100)) && (targetData.wordcount<parseInt((adminData.wordcount*120)/100))){
+    finalResults.docWord.msg="The target file is within the allowed range";
+   }else{
+    finalResults.docWord.msg="The target file is not within the allowed range";
+   }
+
+   //Checking string similarity
+   var x=compData.stringMatch;
+   finalResults.docSim.val=x;
+
+   if(x>80){
+    finalResults.docSim.msg="You have done a great job";
+   }else if(x>50){
+    finalResults.docSim.msg="You have done an average job";
+   }else{
+    finalResults.docSim.msg="You have done a poor job";
+   }
+
+   //Checking keywords used
+   var y=(compData.adminbPerc+compData.adminhPerc)-(compData.targetbPerc+compData.targethPerc);
+   y=(y< 0) ? y * -1 : y;
+   finalResults.docTech.val=y;
+   if(y<10){
+    finalResults.docTech.msg="Your document can be referred to someone";
+   }else if (y<20){
+    finalResults.docTech.msg="Your document is worthy for you only";
+  }else{
+    finalResults.docTech.msg="Your document is not worth reading";
+  }
+
+  //Checking literature of document
+  var z=(adminData.nounPercA+adminData.verbPercA+adminData.adjPercA)-(targetData.nounPercT+targetData.verbPercT+targetData.adjPercT);
+  finalResults.docLit.val=z;
+  if(z<=(-5)){
+    finalResults.docLit.msg="This document is well explaining or may be off the topic";
+  }else if(z>(-5) && z<5){
+    finalResults.docLit.msg="This document is around the topic";
+  }else{
+    finalResults.docLit.msg="This document is less interactive or may be just touching the topic";
+  }     
+
+   //stringifying json object
+   let json=JSON.stringify(finalResults,null,2);
+   //writing final data into json
+   fs.writeFile('final_data.json',json,'utf8',(err)=>{
+    if(err){
+      console.log("Error");
+      return;
+    }
+   });
+
 })
 .catch((message)=> console.log(message));
 
@@ -141,4 +209,5 @@ var percKeys=function(tokenhKey,tokenArray,word){
     let perc=(count/word)*100;
     return parseInt(perc);
   }
+
 
