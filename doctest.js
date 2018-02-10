@@ -6,11 +6,15 @@ var WordPOS = require('wordpos');
 var fs=require('fs');
 var path = require('path');
 var wordpos = new WordPOS();
+var tokenizer = new natural.WordTokenizer();
 var admin='html.docx';
 var target='bootstrap.docx';
 var dataA;
 var dataT;
-
+var tokenArrayA=[];
+var tokenArrayT=[];
+var wordH=0;
+var wordB=0;
 
 var adminData={
   extA:path.extname(admin),
@@ -34,7 +38,19 @@ var targetData={
 }
 var compData={
   stringMatch:0,
+  adminhPerc:0,
+  adminbPerc:0,
+  targethPerc:0,
+  targetbPerc:0,
 }
+
+//tokenizing keywords file and counting total words
+var hRead=fs.readFileSync('htmlkeys.txt','utf8');
+wordH=wordcount(hRead);
+var tokenhKeys=tokenizer.tokenize(hRead);
+var bRead=fs.readFileSync('bootstrapKeys.txt','utf8');
+wordB=wordcount(bRead);
+var tokenbKeys=tokenizer.tokenize(bRead);
 
 var docBreak = function(file,obj,data){
   return new Promise((resolve,reject)=>{
@@ -48,6 +64,11 @@ var docBreak = function(file,obj,data){
             dataA=text;
           if(data=='T')
             dataT=text;
+          //Tokenizing whole text
+          if(data=="A")
+            tokenArrayA=tokenizer.tokenize(text);
+          if(data=="T")
+            tokenArrayT=tokenizer.tokenize(text);
           //counting word
           obj.wordcount=wordcount(text);
           //counting nouns
@@ -78,19 +99,26 @@ Promise.all(promises).then(function(results){
   var score=200;
 
   //calculating %age of nouns
-   adminData.nounPercA=parseInt(adminData.nounsCount/(adminData.wordcount)*100);
-   targetData.nounPercT=parseInt(targetData.nounsCount/(targetData.wordcount)*100);
+  adminData.nounPercA=parseInt((adminData.nounsCount/adminData.wordcount)*1000);
+  targetData.nounPercT=parseInt((targetData.nounsCount/targetData.wordcount)*1000);
 
   //calculating %age of adjectives
-   adminData.adjPercA=parseInt(adminData.adjCount/(adminData.wordcount)*100);
-   targetData.adjPercT=parseInt(targetData.adjCount/(targetData.wordcount)*100);
+  adminData.adjPercA=parseInt((adminData.adjCount/adminData.wordcount)*1000);
+  targetData.adjPercT=parseInt((targetData.adjCount/targetData.wordcount)*1000);
 
   //calculating %age of verbs
-   adminData.verbPercA=parseInt(adminData.verbCount/(adminData.wordcount)*100);
-   targetData.verbPercT=parseInt(targetData.verbCount/(targetData.wordcount)*100);
+  adminData.verbPercA=parseInt((adminData.verbCount/adminData.wordcount)*1000);
+  targetData.verbPercT=parseInt((targetData.verbCount/targetData.wordcount)*1000);
 
   //calculating string matching
-   compData.stringMatch=(stringSimilarity.compareTwoStrings(dataA,dataT))*100;
+  compData.stringMatch=parseInt((stringSimilarity.compareTwoStrings(dataA,dataT))*100);
+
+   //calculating %age of keywords used
+   compData.adminhPerc=percKeys(tokenhKeys,tokenArrayA,wordH);
+   compData.adminbPerc=percKeys(tokenbKeys,tokenArrayA,wordB);
+   compData.targethPerc=percKeys(tokenhKeys,tokenArrayT,wordH);
+   compData.targetbPerc=percKeys(tokenbKeys,tokenArrayT,wordB);
+
 
 
    console.log(adminData);
@@ -98,3 +126,19 @@ Promise.all(promises).then(function(results){
    console.log(compData);
 })
 .catch((message)=> console.log(message));
+
+
+var percKeys=function(tokenhKey,tokenArray,word){
+   var count=0;
+    for(let i in tokenhKey){
+      for(let j in tokenArray){
+        if(tokenhKey[i]==tokenArray[j]){
+          count++;
+          break;
+        }
+      }
+    }
+    let perc=(count/word)*100;
+    return parseInt(perc);
+  }
+
