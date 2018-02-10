@@ -1,20 +1,49 @@
 {
-  "docType": {
-    "msg": "File Accepted:Good to go"
-  },
-  "docWord": {
-    "msg": "The target file is not within the allowed range"
-  },
-  "docSim": {
-    "val": 53,
-    "msg": "You have done an average job"
-  },
-  "docTech": {
-    "val": 10,
-    "msg": "Your document is worthy for you only"
-  },
-  "docLit": {
-    "val": 3,
-    "msg": "This document is around the topic"
-  }
+          "adminData": {
+                    "extA": ".docx",
+                    "wordcount": 4030,
+                    "nounsCount": 15,
+                    "adjCount": 6,
+                    "verbCount": 21,
+                    "nounPercA": 3,
+                    "adjPercA": 1,
+                    "verbPercA": 5
+          },
+          "targetData": {
+                    "extT": ".docx",
+                    "wordcount": 1817,
+                    "nounsCount": 4,
+                    "adjCount": 2,
+                    "verbCount": 7,
+                    "nounPercT": 2,
+                    "adjPercT": 1,
+                    "verbPercT": 3
+          },
+          "compData": {
+                    "stringMatch": 53,
+                    "adminhPerc": 45,
+                    "adminbPerc": 17,
+                    "targethPerc": 26,
+                    "targetbPerc": 46
+          },
+          "finalData": {
+                    "docType": {
+                              "msg": "File Accepted:Good to go"
+                    },
+                    "docWord": {
+                              "msg": "The target file is not within the allowed range"
+                    },
+                    "docSim": {
+                              "val": 53,
+                              "msg": "You have done an average job"
+                    },
+                    "docTech": {
+                              "val": 10,
+                              "msg": "Your document is worthy for you only"
+                    },
+                    "docLit": {
+                              "val": 3,
+                              "msg": "This document is around the topic"
+                    }
+          }
 }

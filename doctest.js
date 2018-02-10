@@ -46,11 +46,20 @@ var compData={
 
 //JSON object
 var finalResults={};
-var param=['docType','docWord','docSim','docTech','docLit'];
+var param=['adminData','targetData','compData','finalData'];
+
 param.map(state=>{
   finalResults[state]={
   }
 });
+
+finalResults.finalData={
+  docType:{},
+  docWord:{},
+  docSim:{},
+  docTech:{},
+  docLit:{}
+}
 
 //tokenizing keywords file and counting total words
 var hRead=fs.readFileSync('htmlkeys.txt','utf8');
@@ -133,57 +142,84 @@ Promise.all(promises).then(function(results){
 
    //Checking the file type
    if(targetData.extT!=adminData.extA){
-    finalResults.docType.push({
-      msg:"File rejected:wrong file extension,(.docx) required"
-    });
+    finalResults.finalData.docType.msg="File rejected:wrong file extension,(.docx) required";
    }else{
-    finalResults.docType.msg="File Accepted:Good to go";
+    finalResults.finalData.docType.msg="File Accepted:Good to go";
    }
 
    //Checking word count
    if((targetData.wordcount>parseInt((adminData.wordcount*80)/100)) && (targetData.wordcount<parseInt((adminData.wordcount*120)/100))){
-    finalResults.docWord.msg="The target file is within the allowed range";
+    finalResults.finalData.docWord.msg="The target file is within the allowed range";
    }else{
-    finalResults.docWord.msg="The target file is not within the allowed range";
+    finalResults.finalData.docWord.msg="The target file is not within the allowed range";
    }
 
    //Checking string similarity
    var x=compData.stringMatch;
-   finalResults.docSim.val=x;
+   finalResults.finalData.docSim.val=x;
 
    if(x>80){
-    finalResults.docSim.msg="You have done a great job";
+    finalResults.finalData.docSim.msg="You have done a great job";
    }else if(x>50){
-    finalResults.docSim.msg="You have done an average job";
+    finalResults.finalData.docSim.msg="You have done an average job";
    }else{
-    finalResults.docSim.msg="You have done a poor job";
+    finalResults.finalData.docSim.msg="You have done a poor job";
    }
 
    //Checking keywords used
    var y=(compData.adminbPerc+compData.adminhPerc)-(compData.targetbPerc+compData.targethPerc);
    y=(y< 0) ? y * -1 : y;
-   finalResults.docTech.val=y;
+   finalResults.finalData.docTech.val=y;
    if(y<10){
-    finalResults.docTech.msg="Your document can be referred to someone";
+    finalResults.finalData.docTech.msg="Your document can be referred to someone";
    }else if (y<20){
-    finalResults.docTech.msg="Your document is worthy for you only";
+    finalResults.finalData.docTech.msg="Your document is worthy for you only";
   }else{
-    finalResults.docTech.msg="Your document is not worth reading";
+    finalResults.finalData.docTech.msg="Your document is not worth reading";
   }
 
   //Checking literature of document
   var z=(adminData.nounPercA+adminData.verbPercA+adminData.adjPercA)-(targetData.nounPercT+targetData.verbPercT+targetData.adjPercT);
-  finalResults.docLit.val=z;
+  finalResults.finalData.docLit.val=z;
   if(z<=(-5)){
-    finalResults.docLit.msg="This document is well explaining or may be off the topic";
+    finalResults.finalData.docLit.msg="This document is well explaining or may be off the topic";
   }else if(z>(-5) && z<5){
-    finalResults.docLit.msg="This document is around the topic";
+    finalResults.finalData.docLit.msg="This document is around the topic";
   }else{
-    finalResults.docLit.msg="This document is less interactive or may be just touching the topic";
+    finalResults.finalData.docLit.msg="This document is less interactive or may be just touching the topic";
   }     
 
+  //Again Json object :-)
+  finalResults.adminData={
+    extA:adminData.extA,
+    wordcount:adminData.wordcount,
+    nounsCount:adminData.nounsCount,
+    adjCount:adminData.adjCount,
+    verbCount:adminData.verbCount,
+    nounPercA:adminData.nounPercA,
+    adjPercA:adminData.adjPercA,
+    verbPercA:adminData.verbPercA,  
+  }
+  finalResults.targetData={
+    extT:targetData.extT,
+    wordcount:targetData.wordcount,
+    nounsCount:targetData.nounsCount,
+    adjCount:targetData.adjCount,
+    verbCount:targetData.verbCount,
+    nounPercT:targetData.nounPercT,
+    adjPercT:targetData.adjPercT,
+    verbPercT:targetData.verbPercT,  
+  }
+  finalResults.compData={
+    stringMatch:compData.stringMatch,
+    adminhPerc:compData.adminhPerc,
+    adminbPerc:compData.adminbPerc,
+    targethPerc:compData.targethPerc,
+    targetbPerc:compData.targetbPerc,
+  }
+
    //stringifying json object
-   let json=JSON.stringify(finalResults,null,2);
+   let json=JSON.stringify(finalResults,null,20);
    //writing final data into json
    fs.writeFile('final_data.json',json,'utf8',(err)=>{
     if(err){
