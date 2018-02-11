@@ -144,6 +144,10 @@ Promise.all(promises).then(function(results){
    }
 
    //Checking word count
+   var dif=parseInt((adminData.wordcount-targetData.wordcount)/100);
+   dif=(dif<0) ? dif * -1 : dif;
+   score=score-dif;
+
    if((targetData.wordcount>parseInt((adminData.wordcount*80)/100)) && (targetData.wordcount<parseInt((adminData.wordcount*120)/100))){
     finalResults.finalData.docWord.msg="The target file is within the allowed range";
    }else{
@@ -153,6 +157,7 @@ Promise.all(promises).then(function(results){
    //Checking string similarity
    var x=compData.stringMatch;
    finalResults.finalData.docSim.val=x;
+   score=score-(100-x);
 
    if(x>80){
     finalResults.finalData.docSim.msg="You have done a great job";
@@ -166,6 +171,8 @@ Promise.all(promises).then(function(results){
    var y=(compData.adminbPerc+compData.adminhPerc)-(compData.targetbPerc+compData.targethPerc);
    y=(y< 0) ? y * -1 : y;
    finalResults.finalData.docTech.val=y;
+   score=score-y;
+
    if(y<10){
     finalResults.finalData.docTech.msg="Your document can be referred to someone";
    }else if (y<20){
@@ -177,6 +184,9 @@ Promise.all(promises).then(function(results){
   //Checking literature of document
   var z=(adminData.nounPercA+adminData.verbPercA+adminData.adjPercA)-(targetData.nounPercT+targetData.verbPercT+targetData.adjPercT);
   finalResults.finalData.docLit.val=z;
+  var lit=(z< 0) ? z * -1 : z;
+  score=score-lit;
+
   if(z<=(-5)){
     finalResults.finalData.docLit.msg="This document is well explaining or may be off the topic";
   }else if(z>(-5) && z<5){
@@ -212,6 +222,9 @@ Promise.all(promises).then(function(results){
     adminbPerc:compData.adminbPerc,
     targethPerc:compData.targethPerc,
     targetbPerc:compData.targetbPerc,
+    finalScore:score,
+    adminLitT:(adminData.nounPercA+adminData.verbPercA+adminData.adjPercA),
+    targetLitT:(targetData.nounPercT+targetData.verbPercT+targetData.adjPercT),
   }
 
    //stringifying json object

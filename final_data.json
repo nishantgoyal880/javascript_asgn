@@ -24,7 +24,10 @@
                     "adminhPerc": 45,
                     "adminbPerc": 17,
                     "targethPerc": 26,
-                    "targetbPerc": 46
+                    "targetbPerc": 46,
+                    "finalScore": 118,
+                    "adminLitT": 9,
+                    "targetLitT": 6
           },
           "finalData": {
                     "docType": {
