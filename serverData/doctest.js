@@ -62,7 +62,7 @@ finalResults.finalData={
 }
 
 //tokenizing keywords file and counting total words
-var hRead=fs.readFileSync('htmlkeys.txt','utf8');
+var hRead=fs.readFileSync('htmlKeys.txt','utf8');
 wordH=wordcount(hRead);
 var tokenhKeys=tokenizer.tokenize(hRead);
 var bRead=fs.readFileSync('bootstrapKeys.txt','utf8');
@@ -116,16 +116,16 @@ Promise.all(promises).then(function(results){
   var score=200;
 
   //calculating %age of nouns
-  adminData.nounPercA=parseInt((adminData.nounsCount/adminData.wordcount)*1000);
-  targetData.nounPercT=parseInt((targetData.nounsCount/targetData.wordcount)*1000);
+  adminData.nounPercA=parseInt((adminData.nounsCount/adminData.wordcount)*100);
+  targetData.nounPercT=parseInt((targetData.nounsCount/targetData.wordcount)*100);
 
   //calculating %age of adjectives
-  adminData.adjPercA=parseInt((adminData.adjCount/adminData.wordcount)*1000);
-  targetData.adjPercT=parseInt((targetData.adjCount/targetData.wordcount)*1000);
+  adminData.adjPercA=parseInt((adminData.adjCount/adminData.wordcount)*100);
+  targetData.adjPercT=parseInt((targetData.adjCount/targetData.wordcount)*100);
 
   //calculating %age of verbs
-  adminData.verbPercA=parseInt((adminData.verbCount/adminData.wordcount)*1000);
-  targetData.verbPercT=parseInt((targetData.verbCount/targetData.wordcount)*1000);
+  adminData.verbPercA=parseInt((adminData.verbCount/adminData.wordcount)*100);
+  targetData.verbPercT=parseInt((targetData.verbCount/targetData.wordcount)*100);
 
   //calculating string matching
   compData.stringMatch=parseInt((stringSimilarity.compareTwoStrings(dataA,dataT))*100);
@@ -193,7 +193,7 @@ Promise.all(promises).then(function(results){
     finalResults.finalData.docLit.msg="This document is around the topic";
   }else{
     finalResults.finalData.docLit.msg="This document is less interactive or may be just touching the topic";
-  }     
+  }
 
   //Again Json object :-)
   finalResults.adminData={
@@ -204,7 +204,7 @@ Promise.all(promises).then(function(results){
     verbCount:adminData.verbCount,
     nounPercA:adminData.nounPercA,
     adjPercA:adminData.adjPercA,
-    verbPercA:adminData.verbPercA,  
+    verbPercA:adminData.verbPercA,
   }
   finalResults.targetData={
     extT:targetData.extT,
@@ -214,7 +214,7 @@ Promise.all(promises).then(function(results){
     verbCount:targetData.verbCount,
     nounPercT:targetData.nounPercT,
     adjPercT:targetData.adjPercT,
-    verbPercT:targetData.verbPercT,  
+    verbPercT:targetData.verbPercT,
   }
   finalResults.compData={
     stringMatch:compData.stringMatch,
@@ -254,5 +254,3 @@ var percKeys=function(tokenhKey,tokenArray,word){
     let perc=(count/word)*100;
     return parseInt(perc);
   }
-
-

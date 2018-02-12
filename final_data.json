@@ -2,22 +2,22 @@
           "adminData": {
                     "extA": ".docx",
                     "wordcount": 4030,
-                    "nounsCount": 15,
-                    "adjCount": 6,
-                    "verbCount": 21,
-                    "nounPercA": 3,
-                    "adjPercA": 1,
-                    "verbPercA": 5
+                    "nounsCount": 510,
+                    "adjCount": 232,
+                    "verbCount": 245,
+                    "nounPercA": 12,
+                    "adjPercA": 5,
+                    "verbPercA": 6
           },
           "targetData": {
                     "extT": ".docx",
                     "wordcount": 1817,
-                    "nounsCount": 4,
-                    "adjCount": 2,
-                    "verbCount": 7,
-                    "nounPercT": 2,
-                    "adjPercT": 1,
-                    "verbPercT": 3
+                    "nounsCount": 255,
+                    "adjCount": 94,
+                    "verbCount": 137,
+                    "nounPercT": 14,
+                    "adjPercT": 5,
+                    "verbPercT": 7
           },
           "compData": {
                     "stringMatch": 53,
@@ -26,8 +26,8 @@
                     "targethPerc": 26,
                     "targetbPerc": 46,
                     "finalScore": 118,
-                    "adminLitT": 9,
-                    "targetLitT": 6
+                    "adminLitT": 23,
+                    "targetLitT": 26
           },
           "finalData": {
                     "docType": {
@@ -45,7 +45,7 @@
                               "msg": "Your document is worthy for you only"
                     },
                     "docLit": {
-                              "val": 3,
+                              "val": -3,
                               "msg": "This document is around the topic"
                     }
           }
