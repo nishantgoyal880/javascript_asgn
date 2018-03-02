@@ -1,0 +1,397 @@
+Table Of Content
+Table Of Content	1
+BOOTSTRAP 4	2
+Grid System in Bootstrap	3
+TYPOGRAPHY	3
+Tables And Images	3
+Jumbotron	3
+Button and Button Groups	4
+Glyphicons	5
+Basic Pagination	6
+Basic list group	6
+Panels	7
+Basic Dropdown	7
+Basic Collapsible	7
+Navigation Bars	8
+Forms	8
+Media Object	9
+The Carousel Plugin	10
+The Modal Plugin	11
+The Scrollspy Plugin	12
+
+
+
+
+
+
+
+
+
+BOOTSTRAP 4
+Bootstrap is a free front-end framework for faster and easier web development. Bootstrap includes HTML and CSS based design templates for typography, forms, buttons, tables, navigation, modals, image carousels and many other, as well as optional JavaScript plugins.Bootstrap also gives you the ability to easily create responsive designs.
+First of all you have to download and host Bootstrap yourself or you can include it from a CDN (Content Delivery Network).It should be in the head part of the html page which is a good practice to follow.An example is shown below:-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+</body>
+</html>
+
+Grid System in Bootstrap
+Unlike 960 Grid System, Bootstrap has its own grid system which can be implemented row wise and one can divide it into further columns.For example:-
+
+div class="row">
+  <div class="col-sm-4">.col-sm-4</div>
+  <div class="col-sm-4">.col-sm-4</div>
+  <div class="col-sm-4">.col-sm-4</div>
+</div>
+ 
+                                                                                                                                                        TYPOGRAPHY         
+In bootstrap there are a lot of options available for formatting text appearance by making heading ,block quote,division etc.Some of the examples are:
+
+//for heading and highlighted text
+<h1>h1 heading <small>secondary text</small></h1>
+//for block quote
+<blockquote>
+    <p>Wear your flaws as a badge of honour</p>
+    <footer>from nishant goyal</footer>
+  </blockquote>
+
+Tables And Images
+You can add tables with bootstrap predefined property of hovering effect,highlighted effect,bordered tables,striped rows etc.
+Also for images you can give round corners,circled and thumbnails as a property for images.
+
+
+Jumbotron
+A jumbotron indicates a big box for calling extra attention to some special content or information.A jumbotron is displayed as a grey box with rounded corners. It also enlarges the font sizes of the text inside it.There are also available a lot of jumbotron with different properties and you can choose it according to your need.
+<div class="container">
+  <div class="jumbotron">
+    <h1>Bootstrap Tutorial</h1>      
+    <p>Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
+  </div>
+  <p>This is some text.</p>      
+  <p>This is another text.</p>      
+</div>
+Button and Button Groups
+Bootstrap provides a lot of options for button design as well as you can group the buttons according to your will like drop down etc.
+
+//Different styles of button
+<div class="container">
+  <h2>Button Styles</h2>
+  <button type="button" class="btn">Basic</button>
+  <button type="button" class="btn btn-default">Default</button>
+  <button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-success">Success</button>
+  <button type="button" class="btn btn-info">Info</button>
+  <button type="button" class="btn btn-warning">Warning</button>
+  <button type="button" class="btn btn-danger">Danger</button>
+  <button type="button" class="btn btn-link">Link</button>      
+</div>
+
+//Grouping of buttons
+<div class="container">
+  <h2>Split Buttons</h2>
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary">Sony</button>
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="#">Tablet</a></li>
+      <li><a href="#">Smartphone</a></li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+Glyphicons
+Bootstrap provides 260 glyphicons from the Glyphicons Halflings set.Glyphicons can be used in text, buttons, toolbars, navigation, forms, etc.
+
+
+<div class="container">
+  <h2>Glyphicon Examples</h2>
+  <p>Envelope icon: <span class="glyphicon glyphicon-envelope"></span></p>    
+  <p>Envelope icon as a link:
+    <a href="#"><span class="glyphicon glyphicon-envelope"></span></a>
+  </p>
+  <p>Search icon: <span class="glyphicon glyphicon-search"></span></p>
+  <p>Search icon on a button:
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-search"></span> Search
+    </button>
+  </p>
+  <p>Search icon on a styled button:
+    <button type="button" class="btn btn-info">
+      <span class="glyphicon glyphicon-search"></span> Search
+    </button>
+  </p>
+  <p>Print icon: <span class="glyphicon glyphicon-print"></span></p>      
+  <p>Print icon on a styled link button:
+    <a href="#" class="btn btn-success btn-lg">
+      <span class="glyphicon glyphicon-print"></span> Print 
+    </a>
+  </p> 
+</div>
+
+
+
+
+
+
+
+
+
+Basic Pagination
+It allows you to give page number to your web pages and allows you to show the user whether this is an active page or disabled page. It comes with a lot of such type of cool properties.
+
+<ul class="pagination">
+  <li><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+</ul>
+
+Basic list group
+
+It allows you to make list and offers various properties with that list.You can give a link and one can use it further.Some example code is given below.
+
+
+<ul class="list-group">
+  <li class="list-group-item">First item</li>
+  <li class="list-group-item">Second item</li>
+  <li class="list-group-item">Third item</li>
+</ul>
+
+
+Panels
+
+A panel in bootstrap is a bordered box with some padding around its content:
+
+
+<div class="panel panel-default">
+  <div class="panel-body">A Basic Panel</div>
+</div>
+Basic Dropdown
+
+A dropdown menu is a toggleable menu that allows the user to choose one value from a predefined list:
+
+
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a href="#">HTML</a></li>
+    <li><a href="#">CSS</a></li>
+    <li><a href="#">JavaScript</a></li>
+  </ul>
+</div>
+
+
+Basic Collapsible
+
+Collapsibles are useful when you want to hide and show large amount of content:
+
+
+<button data-toggle="collapse" data-target="#demo">Collapsible</button>
+
+<div id="demo" class="collapse">
+Lorem ipsum dolor text....
+</div>
+
+
+
+
+
+
+Navigation Bars
+A navigation bar is a navigation header that is placed at the top of the page.With Bootstrap, a navigation bar can extend or collapse, depending on the screen size.
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+Forms
+Form controls automatically receive some global styling with Bootstrap.
+Bootstrap provides three types of form layouts:
+?	Vertical form (this is default)
+?	Horizontal form
+?	Inline form
+<form action="/action_page.php">
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input type="email" class="form-control" id="email">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd">
+  </div>
+  <div class="checkbox">
+    <label><input type="checkbox"> Remember me</label>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+Media Object
+
+Bootstrap provides an easy way to align media objects (like images or videos) to the left or to the right of some content. This can be used to display blog comments, tweets and so on.
+
+<!-- Left-aligned -->
+<div class="media">
+  <div class="media-left">
+    <img src="img_avatar1.png" class="media-object" style="width:60px">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">John Doe</h4>
+    <p>Lorem ipsum...</p>
+  </div>
+</div>
+
+<!-- Right-aligned -->
+<div class="media">
+  <div class="media-body">
+    <h4 class="media-heading">John Doe</h4>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  </div>
+  <div class="media-right">
+    <img src="img_avatar1.png" class="media-object" style="width:60px">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+The Carousel Plugin
+The Carousel plugin is a component for cycling through elements, like a carousel (slideshow).This feature really makes alive your web page and gives user a wow experience.Now a days you can see the use of carousel in a lot of webpage and find them attractive when you are surfing. 
+
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="la.jpg" alt="Los Angeles">
+    </div>
+
+    <div class="item">
+      <img src="chicago.jpg" alt="Chicago">
+    </div>
+
+    <div class="item">
+      <img src="ny.jpg" alt="New York">
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+
+
+
+
+The Modal Plugin
+
+The Modal plugin is a dialog box/popup window that is displayed on top of the current page.
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+The Scrollspy Plugin
+The Scrollspy plugin is used to automatically update links in a navigation list based on scroll position.
+
+<!-- The scrollable area -->
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<!-- The navbar - The <a> elements are used to jump to a section in the scrollable area -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+...
+  <ul class="nav navbar-nav">
+    <li><a href="#section1">Section 1</a></li>
+	...
+</nav>
+
+<!-- Section 1 -->
+<div id="section1">
+  <h1>Section 1</h1>
+  <p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+</div>
+...
+
+</body>
+
+
+Hence,this is all you need to know about bootstrap .If you understand these basic bootstrap features you are good to go.
+

@@ -1,33 +1,33 @@
 {
           "adminData": {
-                    "extA": ".docx",
-                    "wordcount": 4030,
-                    "nounsCount": 510,
-                    "adjCount": 232,
-                    "verbCount": 245,
-                    "nounPercA": 12,
+                    "extA": ".txt",
+                    "wordcount": 4039,
+                    "nounsCount": 1515,
+                    "adjCount": 214,
+                    "verbCount": 659,
+                    "nounPercA": 37,
                     "adjPercA": 5,
-                    "verbPercA": 6
+                    "verbPercA": 16
           },
           "targetData": {
-                    "extT": ".docx",
+                    "extT": ".txt",
                     "wordcount": 1817,
-                    "nounsCount": 255,
-                    "adjCount": 94,
-                    "verbCount": 137,
-                    "nounPercT": 14,
-                    "adjPercT": 5,
+                    "nounsCount": 672,
+                    "adjCount": 87,
+                    "verbCount": 145,
+                    "nounPercT": 36,
+                    "adjPercT": 4,
                     "verbPercT": 7
           },
           "compData": {
-                    "stringMatch": 53,
+                    "stringMatch": 64,
                     "adminhPerc": 45,
                     "adminbPerc": 17,
                     "targethPerc": 26,
                     "targetbPerc": 46,
-                    "finalScore": 118,
-                    "adminLitT": 23,
-                    "targetLitT": 26
+                    "finalScore": 121,
+                    "adminLitT": 58,
+                    "targetLitT": 47
           },
           "finalData": {
                     "docType": {
@@ -37,7 +37,7 @@
                               "msg": "The target file is not within the allowed range"
                     },
                     "docSim": {
-                              "val": 53,
+                              "val": 64,
                               "msg": "You have done an average job"
                     },
                     "docTech": {
@@ -45,8 +45,8 @@
                               "msg": "Your document is worthy for you only"
                     },
                     "docLit": {
-                              "val": -3,
-                              "msg": "This document is around the topic"
+                              "val": 11,
+                              "msg": "This document is less interactive or may be just touching the topic"
                     }
           }
 }

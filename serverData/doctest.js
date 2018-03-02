@@ -1,20 +1,30 @@
-var textract = require('textract');
+
 var natural = require('natural');
-var stringSimilarity = require('string-similarity');
-var wordcount = require('wordcount');
-var WordPOS = require('wordpos');
 var fs=require('fs');
 var path = require('path');
-var wordpos = new WordPOS();
 var tokenizer = new natural.WordTokenizer();
-var admin='html.docx';
-var target='bootstrap.docx';
+var admin='html.txt';
+var target='bootstrap.txt';
 var dataA;
 var dataT;
 var tokenArrayA=[];
 var tokenArrayT=[];
 var wordH=0;
 var wordB=0;
+var score=200;
+
+//variables for pos tagger
+var base_folder = path.join(path.dirname(require.resolve("natural")), "brill_pos_tagger");
+var rulesFilename = base_folder + "/data/English/tr_from_posjs.txt";
+var lexiconFilename = base_folder + "/data/English/lexicon_from_posjs.json";
+var defaultCategory = 'N';
+ 
+var lexicon = new natural.Lexicon(lexiconFilename, defaultCategory);
+var rules = new natural.RuleSet(rulesFilename);
+var tagger = new natural.BrillPOSTagger(lexicon, rules);
+
+
+
 
 var adminData={
   extA:path.extname(admin),
@@ -63,57 +73,75 @@ finalResults.finalData={
 
 //tokenizing keywords file and counting total words
 var hRead=fs.readFileSync('htmlKeys.txt','utf8');
-wordH=wordcount(hRead);
+wordH=(tokenizer.tokenize(hRead)).length;
 var tokenhKeys=tokenizer.tokenize(hRead);
 var bRead=fs.readFileSync('bootstrapKeys.txt','utf8');
-wordB=wordcount(bRead);
+wordB=(tokenizer.tokenize(bRead)).length;
 var tokenbKeys=tokenizer.tokenize(bRead);
 
+//function for getting various parameter of document
 var docBreak = function(file,obj,data){
-  return new Promise((resolve,reject)=>{
-      //reading file
-      textract.fromFileWithPath(file,{preserveLineBreaks:true},function(error,text){
-        if (error){
-          console.log(error);
-        }else{
-          //obtaining whole text
-          if(data=="A")
-            dataA=text;
-          if(data=='T')
-            dataT=text;
-          //Tokenizing whole text
-          if(data=="A")
-            tokenArrayA=tokenizer.tokenize(text);
-          if(data=="T")
-            tokenArrayT=tokenizer.tokenize(text);
-          //counting word
-          obj.wordcount=wordcount(text);
-          //counting nouns
-          wordpos.getNouns(text, function(result){
-            obj.nounsCount=result.length;
-          });
-          //counting adjectives
-          wordpos.getAdjectives(text, function(result){
-            obj.adjCount=result.length;
-          });
-          //counting verbs
-          wordpos.getVerbs(text, function(result){
-            obj.verbCount=result.length;
-            resolve("success");
-          });
-        }
-      });
-    });
+  //reading file
+  var text= fs.readFileSync(file,'utf8');
+
+  var json=tagger.tag(tokenizer.tokenize(text));
+
+  //obtaining whole text
+  if(data=="A")
+    dataA=text;
+  if(data=='T')
+    dataT=text;
+  //Tokenizing whole text
+  if(data=="A")
+    tokenArrayA=tokenizer.tokenize(text);
+  if(data=="T")
+    tokenArrayT=tokenizer.tokenize(text);
+  //counting word
+  obj.wordcount=(tokenizer.tokenize(text)).length;
+  //counting nouns
+  var count=0;
+  for(i=0;i<obj.wordcount;i++){
+    if(json[i][1]=='NN'||json[i][1]=='NNP'||json[i][1]=='NNPS'||json[i][1]=='NNS')
+      count++;    
   }
+  obj.nounsCount=count;
 
-let promises=[];
-let p1=docBreak(admin,adminData,"A");
-promises.push(p1);
-let p2=docBreak(target,targetData,"T");
-promises.push(p2);
+  //counting verbs
+  var count=0;
+  for(i=0;i<obj.wordcount;i++){
+    if(json[i][1]=='VB'||json[i][1]=='VBD'||json[i][1]=='VBG'||json[i][1]=='VBP'||json[i][1]=='VBN'||json[i][1]=='VBZ')
+      count++;    
+  }
+  obj.verbCount=count;
 
-Promise.all(promises).then(function(results){
-  var score=200;
+  //counting adjectives
+  var count=0;
+  for(i=0;i<obj.wordcount;i++){
+    if(json[i][1]=='JJ'||json[i][1]=='JJR'||json[i][1]=='JJS')
+      count++;    
+  }
+  obj.adjCount=count;
+
+}
+
+//calling target and base file functions 
+docBreak(admin,adminData,"A");
+docBreak(target,targetData,"T");
+
+//function for calculating the total keys used in document
+var percKeys=function(tokenhKey,tokenArray,word){
+   var count=0;
+    for(let i in tokenhKey){
+      for(let j in tokenArray){
+        if(tokenhKey[i]==tokenArray[j]){
+          count++;
+          break;
+        }
+      }
+    }
+    let perc=(count/word)*100;
+    return parseInt(perc);
+  }
 
   //calculating %age of nouns
   adminData.nounPercA=parseInt((adminData.nounsCount/adminData.wordcount)*100);
@@ -128,7 +156,7 @@ Promise.all(promises).then(function(results){
   targetData.verbPercT=parseInt((targetData.verbCount/targetData.wordcount)*100);
 
   //calculating string matching
-  compData.stringMatch=parseInt((stringSimilarity.compareTwoStrings(dataA,dataT))*100);
+  compData.stringMatch=parseInt((natural.JaroWinklerDistance(dataA,dataT))*100);
 
    //calculating %age of keywords used
    compData.adminhPerc=percKeys(tokenhKeys,tokenArrayA,wordH);
@@ -138,7 +166,7 @@ Promise.all(promises).then(function(results){
 
    //Checking the file type
    if(targetData.extT!=adminData.extA){
-    finalResults.finalData.docType.msg="File rejected:wrong file extension,(.docx) required";
+    finalResults.finalData.docType.msg="File rejected:wrong file extension";
    }else{
     finalResults.finalData.docType.msg="File Accepted:Good to go";
    }
@@ -237,20 +265,6 @@ Promise.all(promises).then(function(results){
     }
    });
 
-})
-.catch((message)=> console.log(message));
 
 
-var percKeys=function(tokenhKey,tokenArray,word){
-   var count=0;
-    for(let i in tokenhKey){
-      for(let j in tokenArray){
-        if(tokenhKey[i]==tokenArray[j]){
-          count++;
-          break;
-        }
-      }
-    }
-    let perc=(count/word)*100;
-    return parseInt(perc);
-  }
+
